@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue App</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .green {
+        color: green;
+      }
+
+      .red {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        <label for="age">Usia</label>
+        <input type="text" v-model="age" />
+      </div>
+      <h1>{{message}}</h1>
+      <h1>
+        apakah memiliki SIM:
+        <span :class="{'green': hasSIM === 'Iya', 'red': hasSIM === 'Tidak'}">
+          {{hasSIM}}
+        </span>
+      </h1>
+    </div>
+  </body>
+  <script>
+    const { createApp, ref, computed } = Vue;
+    createApp({
+      setup() {
+        let message = ref("hello");
+        let age = ref(null);
+        // add computed func
+        let hasSIM = computed(() => {
+          console.log("computed");
+          return age.value >= 17 ? "Iya" : "Tidak";
+        });
+
+        setTimeout(() => {
+          console.log("console from timeout");
+          message.value = "hai";
+          age.value = 19;
+        }, 5000);
+
+        return {
+          // exposed to template
+          message,
+          hasSIM,
+          age,
+        };
+      },
+    }).mount("#app");
+  </script>
+</html>

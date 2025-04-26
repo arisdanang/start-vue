@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Belajar Vue</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>{{areWeDone ? 'your score: ' + score : 'next question'}}</h1>
+
+      <h1>{{question}}</h1>
+      <input type="text" v-model="answer" />
+      <p>{{answer}}</p>
+    </div>
+  </body>
+  <script>
+    const { createApp, ref, computed } = Vue;
+
+    const App = {
+      setup() {
+        const questions = [
+          "How much is 2+2",
+          "How much is 3*5+1",
+          "What is the rest from 3/1",
+        ];
+        const answers = ["4", "16", "1"];
+
+        const score = ref(0);
+        const currentQuestion = ref(0);
+        const answer = ref(null);
+
+        const question = computed(() => {
+          return questions[currentQuestion.value];
+        });
+
+        const rightAnswer = computed(() => answers[currentQuestion.value]);
+
+        const areWeDone = computed(
+          () => questions.length === currentQuestion.value
+        );
+
+        // mari kita check jawaban
+        const checkAnswer = () => {
+          // check jawaban
+          if (answer.value === rightAnswer.value) {
+            score.value++;
+          }
+
+          // reset form
+          answer.value = "";
+
+          // increment current question
+          currentQuestion.value++;
+
+          // clear interval
+          if (areWeDone.value) {
+            clearInterval(interval);
+          }
+
+          console.log(score.value);
+        };
+
+        const interval = setInterval(checkAnswer, 2000);
+
+        return {
+          question,
+          score,
+          answer,
+          rightAnswer,
+          areWeDone,
+        };
+      },
+    };
+
+    createApp(App).mount("#app");
+  </script>
+</html>
