@@ -10,9 +10,10 @@
     <div id="app">
       <h1>{{areWeDone ? 'your score: ' + score : 'next question'}}</h1>
 
-      <h1>{{question}}</h1>
+      <h2>{{question}}</h2>
       <input type="text" v-model="answer" />
-      <p>{{answer}}</p>
+
+      <p>{{areWeDone ? '' : 'TIMER: ' + timer}}</p>
     </div>
   </body>
   <script>
@@ -30,6 +31,7 @@
         const score = ref(0);
         const currentQuestion = ref(0);
         const answer = ref(null);
+        const timer = ref(5);
 
         const question = computed(() => {
           return questions[currentQuestion.value];
@@ -54,18 +56,25 @@
           // increment current question
           currentQuestion.value++;
 
+          timer.value = 5;
+
           // clear interval
           if (areWeDone.value) {
             clearInterval(interval);
+            clearInterval(timerInterval);
           }
 
           console.log(score.value);
         };
 
-        const interval = setInterval(checkAnswer, 2000);
+        const interval = setInterval(checkAnswer, 5000);
+        const timerInterval = setInterval(() => {
+          timer.value--;
+        }, 1000);
 
         return {
           question,
+          timer,
           score,
           answer,
           rightAnswer,
