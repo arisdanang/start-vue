@@ -98,17 +98,10 @@
     </div>
 
     <script>
-      const { createApp, onMounted, useTemplateRef, ref } = Vue;
+      const { createApp, onMounted, useTemplateRef, ref, watch } = Vue;
       const App = {
         setup() {
-          const tasks = ref([
-            {
-              id: 1,
-              description: "beli buah",
-              priority: "Low",
-              isDone: true,
-            },
-          ]);
+          const tasks = ref(JSON.parse(localStorage.getItem("tasks") ?? "[]"));
           const task = ref("");
           const priority = ref("");
 
@@ -141,6 +134,16 @@
             task.value = "";
             priority.value = "";
           };
+
+          watch(
+            tasks,
+            () => {
+              localStorage.setItem("tasks", JSON.stringify(tasks.value));
+            },
+            {
+              deep: true,
+            }
+          );
 
           return {
             addNewTask,
