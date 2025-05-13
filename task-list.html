@@ -70,10 +70,10 @@
       </form>
 
       <!-- Task filtering -->
-      <input placeholder="Filter tasks..." />
+      <input placeholder="Filter tasks..." v-model="filteredText" />
 
       <!-- If there no tasks -->
-      <div v-if="tasks.length === 0">
+      <div v-if="filteredTask.length === 0">
         <p>No tasks found. Try changing the filter or add some tasks!</p>
       </div>
 
@@ -81,7 +81,7 @@
         <h3>Your Tasks</h3>
         <!-- This is a list of tasks -->
         <div
-          v-for="(task,index) in tasks"
+          v-for="(task,index) in filteredTask"
           :key="task.id"
           :class="{'task': true, completed: task.isDone, [task.priority.toLowerCase()]: true}"
         >
@@ -100,12 +100,22 @@
     </div>
 
     <script>
-      const { createApp, onMounted, useTemplateRef, ref, watch } = Vue;
+      const { createApp, onMounted, useTemplateRef, ref, watch, computed } =
+        Vue;
       const App = {
         setup() {
           const tasks = ref(JSON.parse(localStorage.getItem("tasks") ?? "[]"));
           const task = ref("");
           const priority = ref("");
+          const filteredText = ref("");
+
+          const filteredTask = computed(() =>
+            tasks.value.filter((task) =>
+              task.description
+                .toLowerCase()
+                .includes(filteredText.value.toLowerCase())
+            )
+          );
 
           // di vue v.3.5+ itu bisa akses ref menggunakan useTemplateRef
           // dibawah versi itu kita menggunakan ref
@@ -158,6 +168,8 @@
             priority,
             handleAddTask,
             handleDeleteTask,
+            filteredText,
+            filteredTask,
           };
         },
       };
