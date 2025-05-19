@@ -1,11 +1,12 @@
 <script setup>
+import ButtonCompoent from './ButtonComponent.vue'
 defineProps({
   title: String,
   date: String,
   description: String,
 })
 
-defineEmits(['register', 'follow'])
+defineEmits(['register'])
 </script>
 
 <template>
@@ -14,18 +15,7 @@ defineEmits(['register', 'follow'])
     <p class="p-4 border-b border-gray-200">{{ date }}</p>
     <p class="p-4">{{ description }}</p>
     <section class="flex justify-end p-4">
-      <button
-        @click="$emit('register')"
-        class="text-sm font-medium border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-100"
-      >
-        Register
-      </button>
-      <button
-        @click="$emit('follow')"
-        class="text-sm font-medium border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-100"
-      >
-        Follow
-      </button>
+      <ButtonCompoent @click="$emit('register')">Register</ButtonCompoent>
     </section>
   </div>
 </template>
