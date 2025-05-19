@@ -14,7 +14,6 @@ import EventCard from '@/components/EventCard.vue'
         date="20-12-2025"
         description="testing aja"
         @register="console.log('ini register')"
-        @follow="console.log('ini follow')"
       />
     </section>
     <h2 class="text-2xl font-medium">Your Bookings</h2>
