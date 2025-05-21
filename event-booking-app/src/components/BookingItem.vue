@@ -1,7 +1,7 @@
 <script setup>
-import RoundedCard from './RoundedCard.vue'
+import SectionCard from './SectionCard.vue'
 </script>
 
 <template>
-  <RoundedCard><div class="p-4">hello world</div> </RoundedCard>
+  <SectionCard>hello world</SectionCard>
 </template>
