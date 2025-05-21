@@ -1,7 +1,13 @@
 <script setup>
+import ButtonComponent from './ButtonComponent.vue'
 import SectionCard from './SectionCard.vue'
 </script>
 
 <template>
-  <SectionCard>hello world</SectionCard>
+  <SectionCard>
+    <div class="flex justify-between">
+      <div>hello world</div>
+      <ButtonComponent variant="danger"> Cancel </ButtonComponent>
+    </div>
+  </SectionCard>
 </template>
