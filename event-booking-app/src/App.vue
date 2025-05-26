@@ -1,6 +1,18 @@
 <script setup>
+import { ref, onMounted } from 'vue'
 import EventCard from '@/components/EventCard.vue'
 import BookingItem from './components/BookingItem.vue'
+
+const events = ref([])
+
+const fetchEvents = async () => {
+  const response = await fetch('http://localhost:3001/events')
+  events.value = await response.json()
+
+  console.log(events.value)
+}
+
+onMounted(() => fetchEvents())
 </script>
 
 <template>
@@ -9,11 +21,11 @@ import BookingItem from './components/BookingItem.vue'
     <h2 class="text-2xl font-medium">All Events</h2>
     <section class="grid grid-cols-2 gap-8">
       <EventCard
-        v-for="i in 8"
-        :key="i"
-        title="Jakarta City Run 2025"
-        date="20-12-2025"
-        description="testing aja"
+        v-for="event in events"
+        :key="event"
+        :title="event.title"
+        :date="event.date"
+        :description="event.description"
         @register="console.log('ini register')"
       />
     </section>
