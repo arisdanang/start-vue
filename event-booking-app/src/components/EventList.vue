@@ -23,14 +23,19 @@ onMounted(() => fetchEvents())
 <template>
   <section class="grid grid-cols-2 gap-8">
     <template v-if="!fetching">
-      <EventCard
-        v-for="event in events"
-        :key="event"
-        :title="event.title"
-        :date="event.date"
-        :description="event.description"
-        @register="$emit('register', event)"
-      />
+      <template v-if="events.length">
+        <EventCard
+          v-for="event in events"
+          :key="event"
+          :title="event.title"
+          :date="event.date"
+          :description="event.description"
+          @register="$emit('register', event)"
+        />
+      </template>
+      <template v-else>
+        <div class="col-span-2 text-center text-gray-400">no events yet</div>
+      </template>
     </template>
     <template v-else>
       <LoadingIndicator v-for="i in 4" :key="i" />
