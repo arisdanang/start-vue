@@ -1,22 +1,11 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import BookingItem from '@/components/BookingItem.vue'
 import MiniLoading from '@/components/MiniLoading.vue'
 import EventList from '@/components/EventList.vue'
+import useBookings from '@/composables/useBookings'
 
-const bookings = ref([])
-const isFetchingBookings = ref(false)
-
-const fetchBookings = async () => {
-  isFetchingBookings.value = true
-  try {
-    const response = await fetch('http://localhost:3001/bookings')
-    bookings.value = await response.json()
-  } finally {
-    isFetchingBookings.value = false
-  }
-}
-
+const { bookings, fetchBookings, isFetching } = useBookings()
 const handleRegistration = async (event) => {
   if (bookings.value.some((booking) => booking.eventId === event.id && booking.userId === 1)) {
     alert('you are already registered for this event')
@@ -88,7 +77,7 @@ onMounted(() => {
     <EventList @register="handleRegistration($event)" />
     <h2 class="text-2xl font-medium">Your Bookings</h2>
     <section class="grid grid-cols-1 gap-4">
-      <template v-if="!isFetchingBookings">
+      <template v-if="!isFetching">
         <BookingItem
           v-for="booking in bookings"
           :key="booking"
